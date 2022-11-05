@@ -1,28 +1,52 @@
 <template>
-  <button
-    class="item"
-    v-for="video in [1, 2, 3, 4, 5]"
-    :key="video"
-    @click="openVideo"
-  >
+  <button class="item" @click="openVideo">
     <img
       class="item__thumbnail"
-      src="@/assets/thumbnail.jpg"
+      :src="video.snippet.thumbnails.high.url"
       alt="video title"
     />
     <button class="item__close" @click="removeVideo">
-      <img src="@/assets/CloseIcon.svg" alt="" />
+      <img src="@/assets/CloseIcon.svg" :alt="video.snippet.title" />
     </button>
-    <!--    <div class="item__time">0:40</div>-->
+    <span class="item__time">
+      {{ YTDurationFormat(video.contentDetails.duration) }}
+    </span>
   </button>
 </template>
 
 <script setup lang="ts">
+import type { Video } from "@/Types/Video";
+
+defineProps<{
+  video: Video;
+}>();
+
 function openVideo() {
   console.log("open Video");
 }
+
 function removeVideo() {
   console.log("remove video");
+}
+
+function YTDurationFormat(duration: string) {
+  let match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/)!;
+
+  const time = match.slice(1).map((x) => {
+    if (x != null) {
+      return x.replace(/\D/, "");
+    }
+  });
+
+  const hours = parseInt(time[0]!) || 0;
+  const minutes = parseInt(time[1]!) || 0;
+  const seconds = parseInt(time[2]!) || 0;
+
+  const hoursFormat = hours > 0 ? hours + ":" : "";
+  const minutesFormat = minutes < 10 ? `${seconds}0` : minutes;
+  const secondsFormat = seconds < 10 ? `${seconds}0` : seconds;
+
+  return `${hoursFormat}${minutesFormat}:${secondsFormat}`;
 }
 </script>
 
@@ -59,10 +83,13 @@ function removeVideo() {
   opacity: 0.85;
 }
 
-/*.item__time {*/
-/*  position: absolute;*/
-/*  bottom: 0;*/
-/*  right: 0;*/
-/*  background: var(--dark);*/
-/*}*/
+.item__time {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  padding: 0 0.5rem;
+  color: var(--light);
+  background: var(--dark);
+  opacity: 0.85;
+}
 </style>

@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import AddVideoInput from "@/components/AddVideoInput.vue";
 import VideoList from "@/components/VideoList.vue";
+import type { Video } from "@/Types/Video";
+import YoutubeResponse from "../test/mocks/YoutubeResponse";
+
+const videoList: Video[] = YoutubeResponse.items;
 </script>
 
 <template>
   <main class="main">
     <h1>Añadir nuevo video</h1>
     <AddVideoInput />
-    <VideoList />
+    <VideoList :items="videoList" />
   </main>
 </template>
 

@@ -1,7 +1,7 @@
-export interface Video {
+export interface YoutubeResponse {
   kind: string;
   etag: string;
-  items: VideoItems[];
+  items: Video[];
   pageInfo: VideoPageInfo;
 }
 export interface VideoItemsSnippetThumbnailsDefault {
@@ -70,7 +70,7 @@ export interface VideoItemsStatistics {
   favoriteCount: string;
   commentCount: string;
 }
-export interface VideoItems {
+export interface Video {
   kind: string;
   etag: string;
   id: string;
