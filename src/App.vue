@@ -4,8 +4,6 @@ import VideoList from "@/components/VideoList.vue";
 </script>
 
 <template>
-  <header></header>
-
   <main class="main">
     <h1>Añadir nuevo video</h1>
     <AddVideoInput />
