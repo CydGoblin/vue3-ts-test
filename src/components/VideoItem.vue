@@ -43,10 +43,9 @@ function YTDurationFormat(duration: string) {
   const seconds = parseInt(time[2]!) || 0;
 
   const hoursFormat = hours > 0 ? hours + ":" : "";
-  const minutesFormat = minutes < 10 ? `${seconds}0` : minutes;
   const secondsFormat = seconds < 10 ? `${seconds}0` : seconds;
 
-  return `${hoursFormat}${minutesFormat}:${secondsFormat}`;
+  return `${hoursFormat}${minutes}:${secondsFormat}`;
 }
 </script>
 

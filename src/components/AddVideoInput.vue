@@ -1,16 +1,53 @@
 <template>
   <form @submit.prevent="addVideo" class="add-video">
-    <input type="text" placeholder="Añadir video" class="add-video__input" />
+    <input
+      v-model="url"
+      type="url"
+      placeholder="Añadir video"
+      class="add-video__input"
+    />
     <button class="add-video__btn">Añadir</button>
   </form>
 </template>
+
 <script setup lang="ts">
-function addVideo() {
-  console.log("add video");
+import axios from "axios";
+import { ref } from "vue";
+import type {Video, YoutubeResponse} from "@/Types/Video";
+
+const emit = defineEmits<{
+  (e: "addVideo", data: Video): void;
+}>();
+
+const url = ref("");
+
+async function addVideo() {
+  // TODO disabled btn on empty with computed
+  // TODO parse video id form url
+  // TODO url validation
+  // TODO no aceptar duplicados
+
+  try {
+    const videoId = parseId(url.value);
+    const response = await axios.get(
+      `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=AIzaSyDNGGbbjXAo1SE76jmkPub3Tqt9D0ms6d0&part=snippet%2CcontentDetails`
+    );
+    emit("addVideo", (response.data as YoutubeResponse).items[0]);
+  } catch (e) {
+    // TODO better error handle
+    throw new Error("Video not found");
+  }
+}
+
+function parseId(id: string) {
+  const pattern =
+    /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|attribution_link\?a=.+?watch.+?v(?:%|=)))((\w|-){11})(?:\S+)?$/;
+  return id.match(pattern)![1];
 }
 </script>
 
 <style scoped>
+/* TODO add scss*/
 .add-video {
   display: flex;
   width: 100%;

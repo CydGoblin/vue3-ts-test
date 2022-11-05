@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<!-- TODO add pinia?-->
+<!-- TODO add pinia? provide/inject?-->
 <script setup lang="ts">
 import VideoItem from "@/components/VideoItem.vue";
 import type { Video } from "@/Types/Video";
