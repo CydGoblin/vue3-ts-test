@@ -3,6 +3,7 @@
     <VideoItem />
   </div>
 </template>
+
 <script setup lang="ts">
 import VideoItem from "@/components/VideoItem.vue";
 </script>
