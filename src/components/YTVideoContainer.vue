@@ -1,6 +1,5 @@
 <template>
   <div class="youtube-video-container">
-<!--    TODO mantener ratio, en lugar de estirar -->
     <iframe
       width="560"
       height="315"
@@ -30,18 +29,13 @@ const videoLink = computed(() => {
 <style scoped>
 .youtube-video-container {
   position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
   overflow: hidden;
   width: 100%;
-  flex-shrink: 0;
 }
 
-.youtube-video-container::after {
-  display: block;
-  content: "";
-  padding-top: 56.25%;
-}
-
-.youtube-video-container iframe {
+iframe {
   position: absolute;
   top: 0;
   left: 0;
