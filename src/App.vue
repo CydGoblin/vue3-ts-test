@@ -2,21 +2,75 @@
   <main class="main">
     <h1>Añadir nuevo video</h1>
     <AddVideoInput @addVideo="addVideo" />
-    <VideoList :items="videoList" v-if="videoList" />
-    <div class="empty" v-else>Aún no hay video agregados</div>
+    <VideoList
+      :items="videoList"
+      @openVideo="openVideo"
+      @deleteVideo="openDeleteModal"
+    />
+    <DeleteConfirmModal
+      v-if="showDeleteModal"
+      @cancelDelete="cancelDelete"
+      @deleteVideo="deleteVideo"
+      @closeModal="cancelDelete"
+    />
+    <OpenVideoModal
+      v-if="showOpenVideoModal"
+      :video="videoOpened"
+      @closeModal="closeVideo"
+    />
   </main>
 </template>
 
 <script setup lang="ts">
-import AddVideoInput from "@/components/AddVideoInput.vue";
+import AddVideoInput from "@/components/InputVideo.vue";
 import VideoList from "@/components/VideoList.vue";
+import DeleteConfirmModal from "@/components/DeleteConfirmModal.vue";
+import OpenVideoModal from "@/components/OpenVideoModal.vue";
 import type { Video } from "@/Types/Video";
-import { addVideoToCollection, loadVideosCollection } from "@/firebase";
+import {
+  addVideoToCollection,
+  deleteVideoFromCollection,
+  loadVideosCollection,
+} from "@/firebase";
+import { computed, ref } from "vue";
 
 const videoList = loadVideosCollection();
 
+const videoIdToDelete = ref("");
+const videoOpened = ref<Video | null>(null);
+
+function openVideo(video: Video) {
+  videoOpened.value = video;
+}
+
+const showDeleteModal = computed(() => {
+  return !!videoIdToDelete.value;
+});
+
+const showOpenVideoModal = computed(() => {
+  return !!videoOpened.value;
+});
+
 async function addVideo(video: Video) {
   await addVideoToCollection(video);
+}
+
+async function deleteVideo() {
+  console.log("deleteVideo");
+  await deleteVideoFromCollection(videoIdToDelete.value);
+  videoIdToDelete.value = "";
+}
+
+function openDeleteModal(videoId: string) {
+  videoIdToDelete.value = videoId;
+}
+
+async function cancelDelete() {
+  videoIdToDelete.value = "";
+}
+
+function closeVideo() {
+  videoOpened.value = null;
 }
 </script>
 
@@ -35,11 +89,5 @@ async function addVideo(video: Video) {
 h1 {
   margin-bottom: 1rem;
   margin-right: auto;
-}
-
-.empty {
-  font-size: 2.5rem;
-  margin-top: 70px;
-  padding: 2rem;
 }
 </style>

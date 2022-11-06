@@ -1,7 +1,14 @@
 <template>
-  <div class="list">
-    <VideoItem :video="video" v-for="video in items" :key="video.id" />
+  <div class="list" v-if="items">
+    <VideoItem
+      :video="video"
+      v-for="video in items"
+      :key="video.id"
+      @open="openVideo"
+      @delete="removeVideo"
+    />
   </div>
+  <div class="empty" v-else>Aún no hay video agregados</div>
 </template>
 
 <!-- TODO add pinia? provide/inject?-->
@@ -12,6 +19,19 @@ import type { Video } from "@/Types/Video";
 defineProps<{
   items: Video[];
 }>();
+
+const emit = defineEmits<{
+  (e: "deleteVideo", data: string): void;
+  (e: "openVideo", data: Video): void;
+}>();
+
+function openVideo(video: Video) {
+  emit("openVideo", video);
+}
+
+function removeVideo(videoId: string) {
+  emit("deleteVideo", videoId);
+}
 </script>
 
 <style scoped>
@@ -32,5 +52,11 @@ defineProps<{
   .list {
     grid-template-columns: repeat(3, 1fr);
   }
+}
+
+.empty {
+  font-size: 2.5rem;
+  margin-top: 70px;
+  padding: 2rem;
 }
 </style>

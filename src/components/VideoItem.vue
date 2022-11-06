@@ -1,17 +1,19 @@
 <template>
-  <button class="item" @click="openVideo">
-    <img
-      class="item__thumbnail"
-      :src="video.snippet.thumbnails.high.url"
-      alt="video title"
-    />
-    <button class="item__close" @click="removeVideo">
-      <img src="@/assets/CloseIcon.svg" :alt="video.snippet.title" />
+  <div class="wrapper">
+    <button class="item" @click="openVideo(video)">
+      <img
+        class="item__thumbnail"
+        :src="video.snippet.thumbnails.high.url"
+        alt="video title"
+      />
+      <span class="item__time">
+        {{ YTDurationFormat(video.contentDetails.duration) }}
+      </span>
     </button>
-    <span class="item__time">
-      {{ YTDurationFormat(video.contentDetails.duration) }}
-    </span>
-  </button>
+    <button class="item__close" @click="removeVideo(video.id)">
+      <img src="@/assets/CloseSquareIcon.svg" :alt="video.snippet.title" />
+    </button>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -21,12 +23,17 @@ defineProps<{
   video: Video;
 }>();
 
-function openVideo() {
-  console.log("open Video");
+const emit = defineEmits<{
+  (e: "delete", data: string): void;
+  (e: "open", data: Video): void;
+}>();
+
+function openVideo(video: Video) {
+  emit("open", video);
 }
 
-function removeVideo() {
-  console.log("remove video");
+function removeVideo(videoId: string) {
+  emit("delete", videoId);
 }
 
 function YTDurationFormat(duration: string) {
@@ -50,9 +57,11 @@ function YTDurationFormat(duration: string) {
 </script>
 
 <style scoped>
+.wrapper {
+  position: relative;
+}
 .item {
   box-shadow: 0 20px 20px rgba(0, 0, 0, 0.07);
-  position: relative;
   transition: box-shadow 200ms ease;
 }
 
@@ -66,7 +75,7 @@ function YTDurationFormat(duration: string) {
 
 .item__close {
   position: absolute;
-  z-index: 10;
+  z-index: 1;
   top: 0.5rem;
   right: 0.5rem;
   width: 24px;
