@@ -12,8 +12,8 @@
       >Añadir</Button
     >
   </form>
-<!--  TODO Reusable alert success/error-->
-  <div v-if="errorMsg" class="error">{{ errorMsg }}</div>
+  <!--  TODO Reusable alert success/error-->
+  <Alert v-if="alert.msg" :type="alert.type" :msg="alert.msg" />
 </template>
 
 <script setup lang="ts">
@@ -21,6 +21,7 @@ import axios from "axios";
 import { computed, ref, toRefs } from "vue";
 import type { Video, YoutubeResponse } from "@/Types/Video";
 import Button from "@/components/UI/Button.vue";
+import Alert from "@/components/UI/Alert.vue";
 
 const props = defineProps<{
   videoIdList: string[];
@@ -34,7 +35,7 @@ const url = ref("");
 
 const input = ref<HTMLInputElement | null>(null);
 
-const errorMsg = ref("");
+const alert = ref({ type: "error", msg: "" });
 
 const { videoIdList } = toRefs(props);
 
@@ -46,7 +47,7 @@ async function addVideo() {
   // TODO no aceptar duplicados
   // TODO Borrar el error cuando ya no es necesario
 
-  errorMsg.value = "";
+  alert.value.msg = "";
   const isValidInput = input.value ? input.value.validity.valid : false;
   const videoId = parseId(url.value);
 
@@ -58,13 +59,15 @@ async function addVideo() {
         `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=AIzaSyDNGGbbjXAo1SE76jmkPub3Tqt9D0ms6d0&part=snippet%2CcontentDetails`
       );
       emit("addVideo", (response.data as YoutubeResponse).items[0]);
+      alert.value = { type: "success", msg: "Video añadido" };
+      url.value = "";
     } catch (e) {
       // TODO better error handle
       throw new Error("Video not found");
     }
   } else {
-    if (!isValidInput) errorMsg.value = "URL inválida";
-    if (isDuplicated) errorMsg.value = "Este video ya existe en la colección";
+    if (!isValidInput) alert.value.msg = "URL inválida";
+    if (isDuplicated) alert.value.msg = "Este video ya existe en la colección";
     input.value!.focus();
   }
 }
@@ -72,7 +75,7 @@ async function addVideo() {
 function parseId(id: string) {
   const pattern =
     /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|attribution_link\?a=.+?watch.+?v(?:%|=)))((\w|-){11})(?:\S+)?$/;
-  return id.match(pattern)![1];
+  return id.match(pattern) ? id.match(pattern)![1] : "";
 }
 </script>
 
@@ -82,6 +85,7 @@ function parseId(id: string) {
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin-bottom: 1rem;
 }
 
 .add-video__input {

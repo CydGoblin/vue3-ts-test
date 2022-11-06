@@ -1,7 +1,9 @@
 <template>
   <div class="overlay">
     <div class="modal">
-      <button class="close" @click="close"><img src="@/assets/CloseIcon.svg" alt="" /></button>
+      <button class="close" @click="close">
+        <img src="@/assets/CloseIcon.svg" alt="" />
+      </button>
       <div>
         <slot />
       </div>
@@ -31,12 +33,14 @@ function close() {
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: auto;
+  /*  TODO Fix scroll*/
 }
 
 .close {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 0.5rem;
+  right: 0.5rem;
   z-index: 20;
   width: 24px;
   height: 24px;
@@ -57,5 +61,11 @@ function close() {
   .modal {
     margin: 0;
   }
+
+  .close {
+    top: 1rem;
+    right: 1rem;
+  }
+
 }
 </style>
