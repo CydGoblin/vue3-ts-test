@@ -36,7 +36,7 @@ import { computed, ref } from "vue";
 
 const videoList = loadVideosCollection();
 
-const videoIdToDelete = ref("");
+const videoIdToDelete = ref<Video | null>(null);
 const videoOpened = ref<Video | null>(null);
 
 function openVideo(video: Video) {
@@ -56,17 +56,16 @@ async function addVideo(video: Video) {
 }
 
 async function deleteVideo() {
-  console.log("deleteVideo");
-  await deleteVideoFromCollection(videoIdToDelete.value);
-  videoIdToDelete.value = "";
+  await deleteVideoFromCollection(videoIdToDelete.value!._id!);
+  videoIdToDelete.value = null;
 }
 
-function openDeleteModal(videoId: string) {
-  videoIdToDelete.value = videoId;
+function openDeleteModal(video: Video) {
+  videoIdToDelete.value = video;
 }
 
 async function cancelDelete() {
-  videoIdToDelete.value = "";
+  videoIdToDelete.value = null;
 }
 
 function closeVideo() {

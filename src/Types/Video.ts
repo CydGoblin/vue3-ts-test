@@ -71,6 +71,7 @@ export interface VideoItemsStatistics {
   commentCount: string;
 }
 export interface Video {
+  _id?: string;
   kind: string;
   etag: string;
   id: string;

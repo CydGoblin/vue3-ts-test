@@ -21,7 +21,7 @@ defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: "deleteVideo", data: string): void;
+  (e: "deleteVideo", data: Video): void;
   (e: "openVideo", data: Video): void;
 }>();
 
@@ -29,8 +29,8 @@ function openVideo(video: Video) {
   emit("openVideo", video);
 }
 
-function removeVideo(videoId: string) {
-  emit("deleteVideo", videoId);
+function removeVideo(video: Video) {
+  emit("deleteVideo", video);
 }
 </script>
 

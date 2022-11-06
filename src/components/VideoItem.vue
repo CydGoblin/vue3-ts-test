@@ -10,7 +10,7 @@
         {{ YTDurationFormat(video.contentDetails.duration) }}
       </span>
     </button>
-    <button class="item__close" @click="removeVideo(video.id)">
+    <button class="item__close" @click="removeVideo(video)">
       <img src="@/assets/CloseSquareIcon.svg" :alt="video.snippet.title" />
     </button>
   </div>
@@ -24,7 +24,7 @@ defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: "delete", data: string): void;
+  (e: "delete", data: Video): void;
   (e: "open", data: Video): void;
 }>();
 
@@ -32,8 +32,8 @@ function openVideo(video: Video) {
   emit("open", video);
 }
 
-function removeVideo(videoId: string) {
-  emit("delete", videoId);
+function removeVideo(video: Video) {
+  emit("delete", video);
 }
 
 function YTDurationFormat(duration: string) {

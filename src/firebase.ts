@@ -31,14 +31,16 @@ export const updateVideoInCollection = (id: string, video: Video) => {
   return videosCollection.doc(id).update(video);
 };
 
-export const deleteVideoFromCollection = (id: string) => {
-  return videosCollection.doc(id).delete();
+export const deleteVideoFromCollection = async (id: string) => {
+  return await videosCollection.doc(id).delete();
 };
 
 export const loadVideosCollection = () => {
   const videos = ref<Video[]>([]);
   const close = videosCollection.onSnapshot((snapshot) => {
-    videos.value = snapshot.docs.map((doc) => doc.data() as Video);
+    videos.value = snapshot.docs.map(
+      (doc) => ({ _id: doc.id, ...doc.data() } as Video)
+    );
   });
   onUnmounted(close);
   return videos;
