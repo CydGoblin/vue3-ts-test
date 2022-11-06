@@ -5,21 +5,27 @@
       type="url"
       placeholder="Añadir video"
       class="add-video__input"
+      required
     />
-    <button class="add-video__btn font-montserrat">Añadir</button>
+    <Button class="add-video__btn" :disabled="disabled">Añadir</Button>
   </form>
 </template>
 
 <script setup lang="ts">
 import axios from "axios";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import type { Video, YoutubeResponse } from "@/Types/Video";
+import Button from "@/components/UI/Button.vue";
 
 const emit = defineEmits<{
   (e: "addVideo", data: Video): void;
 }>();
 
 const url = ref("");
+
+const disabled = computed(() => {
+  return !url.value;
+});
 
 async function addVideo() {
   // TODO disabled btn on empty with computed
@@ -62,13 +68,9 @@ function parseId(id: string) {
 }
 
 .add-video__btn {
-  border: 0;
   background: var(--primary);
-  color: white;
   border-radius: var(--border-radius);
   padding: 1.25rem 5rem;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 1px 4px rgba(0, 0, 0, 0.12),
-    0 2px 2px rgba(0, 0, 0, 0.14);
   margin-top: 1rem;
 }
 

@@ -1,9 +1,10 @@
 <template>
   <button
     class="btn font-montserrat"
-    :class="{ btn__outline: outline }"
+    :class="{ btn__outline: outline, disabled: disabled }"
     :type="type"
     @click="click"
+    :disabled="disabled"
   >
     <slot />
   </button>
@@ -14,10 +15,12 @@ withDefaults(
   defineProps<{
     outline?: boolean;
     type?: "submit" | "button";
+    disabled?: boolean;
   }>(),
   {
     outline: false,
     type: "button",
+    disabled: false,
   }
 );
 const emit = defineEmits<{
@@ -44,5 +47,9 @@ function click() {
   background: var(--light);
   border-color: var(--primary);
   color: var(--primary);
+}
+.btn.disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }
 </style>
