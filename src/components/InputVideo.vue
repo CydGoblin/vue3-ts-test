@@ -49,9 +49,6 @@ const disabled = computed(() => {
 });
 
 async function addVideo() {
-  // TODO no aceptar duplicados
-  // TODO Borrar el error cuando ya no es necesario
-
   alert.value.msg = "";
   const isValidInput = input.value ? input.value.validity.valid : false;
   const videoId = parseId(url.value);
@@ -108,7 +105,6 @@ function closeAlert() {
 </script>
 
 <style scoped>
-/* TODO add scss*/
 .add-video {
   display: flex;
   flex-direction: column;

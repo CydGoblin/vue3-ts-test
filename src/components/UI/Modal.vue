@@ -24,17 +24,25 @@ function close() {
 <style scoped>
 .overlay {
   position: fixed;
-  z-index: 20;
-  top: 0;
+  z-index: 1;
   left: 0;
+  top: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
   overflow: auto;
-  /*  TODO Fix scroll*/
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal {
+  position: relative;
+  background-color: #fefefe;
+  margin: 3rem auto;
+  padding: 2rem;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 1024px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.07);
 }
 
 .close {
@@ -46,22 +54,7 @@ function close() {
   height: 24px;
 }
 
-.modal {
-  background: var(--light);
-  max-width: 1024px;
-  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.07);
-  border-radius: var(--border-radius);
-  margin: 2rem;
-  padding: 2rem;
-  width: 100%;
-  position: relative;
-}
-
 @media only screen and (min-width: 1200px) {
-  .modal {
-    margin: 0;
-  }
-
   .close {
     top: 1rem;
     right: 1rem;

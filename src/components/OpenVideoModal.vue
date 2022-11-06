@@ -1,7 +1,7 @@
 <template>
   <Modal @close="close">
     <section class="wrapper">
-      <YTVideoContainer :video="video"/>
+      <YTVideoContainer :video="video" />
       <div>
         <h1>{{ video.snippet.title }}</h1>
         <!--        format \n new line-->
@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import Modal from "@/components/UI/Modal.vue";
-import type {Video} from "@/Types/Video";
+import type { Video } from "@/Types/Video";
 import YTVideoContainer from "@/components/YTVideoContainer.vue";
 
 defineProps<{
@@ -30,9 +30,10 @@ function close() {
 </script>
 
 <style scoped>
-.wrapper {
+h1 {
+  line-height: 1.2;
+  margin: 1rem 0;
 }
-
 @media only screen and (min-width: 1024px) {
   .wrapper {
     display: flex;
