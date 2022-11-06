@@ -17,8 +17,20 @@ defineProps<{
 <style scoped>
 .list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   gap: 70px;
   padding: 70px;
+}
+
+@media only screen and (min-width: 768px) {
+  .list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .list {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 </style>

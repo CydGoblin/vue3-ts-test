@@ -2,7 +2,7 @@
   <main class="main">
     <h1>Añadir nuevo video</h1>
     <AddVideoInput @addVideo="addVideo" />
-    <VideoList :items="videoList" v-if="videoList.length" />
+    <VideoList :items="videoList" v-if="videoList" />
     <div class="empty" v-else>Aún no hay video agregados</div>
   </main>
 </template>
@@ -11,17 +11,13 @@
 import AddVideoInput from "@/components/AddVideoInput.vue";
 import VideoList from "@/components/VideoList.vue";
 import type { Video } from "@/Types/Video";
-import YoutubeResponse from "../test/mocks/YoutubeResponse";
-import { reactive } from "vue";
+import { addVideoToCollection, loadVideosCollection } from "@/firebase";
 
-// const videoList: Video[] = reactive(YoutubeResponse.items);
-const videoList: Video[] = reactive([]);
+const videoList = loadVideosCollection();
 
-// TODO restore from firestore on mounted
-function addVideo(video: Video) {
-  videoList.push(video);
+async function addVideo(video: Video) {
+  await addVideoToCollection(video);
 }
-// TODO Empty state
 </script>
 
 <style scoped>
