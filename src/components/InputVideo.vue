@@ -6,9 +6,13 @@
       placeholder="Añadir video"
       class="add-video__input"
       required
+      ref="input"
     />
-    <Button class="add-video__btn" :disabled="disabled">Añadir</Button>
+    <Button class="add-video__btn" :disabled="disabled" @click="addVideo"
+      >Añadir</Button
+    >
   </form>
+  <div v-if="errorMsg">{{ errorMsg }}</div>
 </template>
 
 <script setup lang="ts">
@@ -17,31 +21,42 @@ import { computed, ref } from "vue";
 import type { Video, YoutubeResponse } from "@/Types/Video";
 import Button from "@/components/UI/Button.vue";
 
+defineProps<{
+  videoList: Video[];
+}>();
+
 const emit = defineEmits<{
   (e: "addVideo", data: Video): void;
 }>();
 
 const url = ref("");
 
+const input = ref<HTMLInputElement | null>(null);
+
+const errorMsg = ref("");
+
 const disabled = computed(() => {
   return !url.value;
 });
 
 async function addVideo() {
-  // TODO disabled btn on empty with computed
-  // TODO parse video id form url
-  // TODO url validation
   // TODO no aceptar duplicados
 
-  try {
-    const videoId = parseId(url.value);
-    const response = await axios.get(
-      `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=AIzaSyDNGGbbjXAo1SE76jmkPub3Tqt9D0ms6d0&part=snippet%2CcontentDetails`
-    );
-    emit("addVideo", (response.data as YoutubeResponse).items[0]);
-  } catch (e) {
-    // TODO better error handle
-    throw new Error("Video not found");
+  const validInput = input.value ? input.value.validity.valid : false;
+
+  if (validInput) {
+    try {
+      const videoId = parseId(url.value);
+      const response = await axios.get(
+        `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=AIzaSyDNGGbbjXAo1SE76jmkPub3Tqt9D0ms6d0&part=snippet%2CcontentDetails`
+      );
+      emit("addVideo", (response.data as YoutubeResponse).items[0]);
+    } catch (e) {
+      // TODO better error handle
+      throw new Error("Video not found");
+    }
+  } else {
+    errorMsg.value = "URL inválida";
   }
 }
 
