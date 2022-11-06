@@ -1,7 +1,7 @@
 <template>
   <main class="main">
     <h1>Añadir nuevo video</h1>
-    <AddVideoInput @addVideo="addVideo" />
+    <AddVideoInput @addVideo="addVideo" :videoIdList="videoIdList" />
     <VideoList
       :items="videoList"
       @openVideo="openVideo"
@@ -49,6 +49,10 @@ const showDeleteModal = computed(() => {
 
 const showOpenVideoModal = computed(() => {
   return !!videoOpened.value;
+});
+
+const videoIdList = computed(() => {
+  return videoList.value.map((video) => video.id);
 });
 
 async function addVideo(video: Video) {

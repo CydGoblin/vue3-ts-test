@@ -12,17 +12,18 @@
       >Añadir</Button
     >
   </form>
-  <div v-if="errorMsg">{{ errorMsg }}</div>
+<!--  TODO Reusable alert success/error-->
+  <div v-if="errorMsg" class="error">{{ errorMsg }}</div>
 </template>
 
 <script setup lang="ts">
 import axios from "axios";
-import { computed, ref } from "vue";
+import { computed, ref, toRefs } from "vue";
 import type { Video, YoutubeResponse } from "@/Types/Video";
 import Button from "@/components/UI/Button.vue";
 
-defineProps<{
-  videoList: Video[];
+const props = defineProps<{
+  videoIdList: string[];
 }>();
 
 const emit = defineEmits<{
@@ -35,18 +36,24 @@ const input = ref<HTMLInputElement | null>(null);
 
 const errorMsg = ref("");
 
+const { videoIdList } = toRefs(props);
+
 const disabled = computed(() => {
   return !url.value;
 });
 
 async function addVideo() {
   // TODO no aceptar duplicados
+  // TODO Borrar el error cuando ya no es necesario
 
-  const validInput = input.value ? input.value.validity.valid : false;
+  errorMsg.value = "";
+  const isValidInput = input.value ? input.value.validity.valid : false;
+  const videoId = parseId(url.value);
 
-  if (validInput) {
+  const isDuplicated = videoIdList.value.includes(videoId);
+
+  if (isValidInput && !isDuplicated) {
     try {
-      const videoId = parseId(url.value);
       const response = await axios.get(
         `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=AIzaSyDNGGbbjXAo1SE76jmkPub3Tqt9D0ms6d0&part=snippet%2CcontentDetails`
       );
@@ -56,7 +63,9 @@ async function addVideo() {
       throw new Error("Video not found");
     }
   } else {
-    errorMsg.value = "URL inválida";
+    if (!isValidInput) errorMsg.value = "URL inválida";
+    if (isDuplicated) errorMsg.value = "Este video ya existe en la colección";
+    input.value!.focus();
   }
 }
 
