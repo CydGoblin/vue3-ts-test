@@ -64,7 +64,7 @@ async function addVideo() {
         `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=AIzaSyDNGGbbjXAo1SE76jmkPub3Tqt9D0ms6d0&part=snippet%2CcontentDetails`
       );
 
-      if (response.data.items > 0) {
+      if (response.data.items.length > 0) {
         console.log("Si hay items");
         emit("addVideo", (response.data as YoutubeResponse).items[0]);
         alert.value = { type: "success", msg: "Video añadido" };
