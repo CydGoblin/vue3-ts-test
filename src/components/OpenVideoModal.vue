@@ -5,7 +5,7 @@
       <div>
         <h1>{{ video.snippet.title }}</h1>
         <!--        format \n new line-->
-        <p>{{ video.snippet.description }}</p>
+        <p v-html="video.snippet.description"></p>
       </div>
     </section>
   </Modal>

@@ -1,5 +1,6 @@
 <template>
   <div class="youtube-video-container">
+<!--    TODO mantener ratio, en lugar de estirar -->
     <iframe
       width="560"
       height="315"
