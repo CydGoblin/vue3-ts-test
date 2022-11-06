@@ -1,12 +1,25 @@
 <template>
-  <div :class="type">{{ msg }}</div>
+  <div class="alert" :class="type">
+    <span>{{ msg }}</span>
+    <button class="close" @click="close">
+      <img src="@/assets/CloseSquareIcon.svg" alt="" />
+    </button>
+  </div>
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
   type: string;
   msg: string;
 }>();
+
+const emit = defineEmits<{
+  (e: "close"): void;
+}>();
+
+function close() {
+  emit("close");
+}
 </script>
 
 <style scoped>
@@ -24,5 +37,20 @@ const props = defineProps<{
   padding: 0.2rem 1rem;
   border: 1px solid rgb(var(--green));
   border-radius: 3px;
+}
+
+.alert {
+  position: relative;
+  width: 100%;
+  display: flex;
+}
+
+.close {
+  width: 18px;
+  height: 18px;
+  opacity: 0.7;
+  margin-left: auto;
+  justify-self: center;
+  align-self: center;
 }
 </style>

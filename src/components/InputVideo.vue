@@ -12,8 +12,12 @@
       >Añadir</Button
     >
   </form>
-  <!--  TODO Reusable alert success/error-->
-  <Alert v-if="alert.msg" :type="alert.type" :msg="alert.msg" />
+  <Alert
+    v-if="showAlert"
+    :type="alert.type"
+    :msg="alert.msg"
+    @close="closeAlert"
+  />
 </template>
 
 <script setup lang="ts">
@@ -36,6 +40,7 @@ const url = ref("");
 const input = ref<HTMLInputElement | null>(null);
 
 const alert = ref({ type: "error", msg: "" });
+const showAlert = ref(false);
 
 const { videoIdList } = toRefs(props);
 
@@ -58,16 +63,35 @@ async function addVideo() {
       const response = await axios.get(
         `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=AIzaSyDNGGbbjXAo1SE76jmkPub3Tqt9D0ms6d0&part=snippet%2CcontentDetails`
       );
-      emit("addVideo", (response.data as YoutubeResponse).items[0]);
-      alert.value = { type: "success", msg: "Video añadido" };
-      url.value = "";
+
+      if (response.data.items > 0) {
+        console.log("Si hay items");
+        emit("addVideo", (response.data as YoutubeResponse).items[0]);
+        alert.value = { type: "success", msg: "Video añadido" };
+        showAlert.value = true;
+        url.value = "";
+      } else {
+        console.log("No hay item");
+        alert.value = { type: "error", msg: "Video no encontrado o inválido" };
+        showAlert.value = true;
+        input.value!.focus();
+      }
     } catch (e) {
-      // TODO better error handle
+      alert.value = { type: "error", msg: "Video no encontrado o inválido" };
+      input.value!.focus();
       throw new Error("Video not found");
     }
   } else {
-    if (!isValidInput) alert.value.msg = "URL inválida";
-    if (isDuplicated) alert.value.msg = "Este video ya existe en la colección";
+    if (!isValidInput) {
+      alert.value = { type: "error", msg: "URL inválida" };
+    }
+    if (isDuplicated) {
+      alert.value = {
+        type: "error",
+        msg: "Este video ya existe en la colección",
+      };
+    }
+    showAlert.value = true;
     input.value!.focus();
   }
 }
@@ -76,6 +100,10 @@ function parseId(id: string) {
   const pattern =
     /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|attribution_link\?a=.+?watch.+?v(?:%|=)))((\w|-){11})(?:\S+)?$/;
   return id.match(pattern) ? id.match(pattern)![1] : "";
+}
+
+function closeAlert() {
+  showAlert.value = false;
 }
 </script>
 

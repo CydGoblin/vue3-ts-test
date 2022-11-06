@@ -66,6 +66,5 @@ function close() {
     top: 1rem;
     right: 1rem;
   }
-
 }
 </style>
