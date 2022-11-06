@@ -50,13 +50,14 @@ function parseId(id: string) {
 /* TODO add scss*/
 .add-video {
   display: flex;
+  flex-direction: column;
   width: 100%;
 }
 
 .add-video__input {
   flex-grow: 1;
   border: 1px solid rgba(0, 0, 0, 0.3);
-  border-radius: var(--border-radius) 0 0 var(--border-radius);
+  border-radius: var(--border-radius);
   padding: 1rem 1.25rem;
 }
 
@@ -64,9 +65,27 @@ function parseId(id: string) {
   border: 0;
   background: var(--primary);
   color: white;
-  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  border-radius: var(--border-radius);
   padding: 1.25rem 5rem;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 1px 4px rgba(0, 0, 0, 0.12),
     0 2px 2px rgba(0, 0, 0, 0.14);
+  margin-top: 1rem;
+}
+
+@media only screen and (min-width: 768px) {
+  .add-video {
+    flex-direction: row;
+  }
+
+  .add-video__input {
+    flex-grow: 1;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+  }
+
+  .add-video__btn {
+    margin-top: 0;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  }
 }
 </style>
