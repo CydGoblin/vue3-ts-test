@@ -1,8 +1,12 @@
 <template>
+  <select class="select" v-model="sortBy">
+    <option value="longer">Mayor duración</option>
+    <option value="shorter">Menor duración</option>
+  </select>
   <div class="list" v-if="items">
     <VideoItem
       :video="video"
-      v-for="video in items"
+      v-for="video in videosSorted"
       :key="video.id"
       @open="openVideo"
       @delete="removeVideo"
@@ -14,15 +18,21 @@
 <script setup lang="ts">
 import VideoItem from "@/components/VideoItem.vue";
 import type { Video } from "@/Types/Video";
+import { computed, ref, toRefs } from "vue";
+import { YTTime } from "@/composables/YTTime";
 
-defineProps<{
+const props = defineProps<{
   items: Video[];
 }>();
+
+const { items } = toRefs(props);
 
 const emit = defineEmits<{
   (e: "deleteVideo", data: Video): void;
   (e: "openVideo", data: Video): void;
 }>();
+
+const sortBy = ref("shorter");
 
 function openVideo(video: Video) {
   emit("openVideo", video);
@@ -31,6 +41,24 @@ function openVideo(video: Video) {
 function removeVideo(video: Video) {
   emit("deleteVideo", video);
 }
+
+const videosSorted = computed(() => {
+  const clone = items.value;
+  if (sortBy.value === "longer") {
+    return clone.sort(
+      (videoA, videoB) =>
+        YTTime(videoA.contentDetails.duration) +
+        YTTime(videoB.contentDetails.duration)
+    );
+  }
+  return clone.sort((videoA, videoB) => {
+    console.log(YTTime(videoA.contentDetails.duration));
+    return (
+      YTTime(videoA.contentDetails.duration) -
+      YTTime(videoB.contentDetails.duration)
+    );
+  });
+});
 </script>
 
 <style scoped>
@@ -51,6 +79,11 @@ function removeVideo(video: Video) {
   .list {
     grid-template-columns: repeat(3, 1fr);
   }
+}
+
+.select {
+  align-self: end;
+  padding: 0.25rem 0.5rem;
 }
 
 .empty {

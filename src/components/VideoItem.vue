@@ -37,7 +37,7 @@ function removeVideo(video: Video) {
 }
 
 function YTDurationFormat(duration: string) {
-  let match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/)!;
+  const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/)!;
 
   const time = match.slice(1).map((x) => {
     if (x != null) {

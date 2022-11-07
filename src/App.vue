@@ -37,6 +37,7 @@ import { computed, ref } from "vue";
 const videoList = loadVideosCollection();
 
 const videoIdToDelete = ref<Video | null>(null);
+
 const videoOpened = ref<Video | null>(null);
 
 function openVideo(video: Video) {
