@@ -3,8 +3,7 @@
 - El Modal puede ser cerrado dando click en el overlay o con la tecla escape.
 - Responsivo para celulares
 
-#Link
-
+# Link
 [https://afex-vue.web.app/](https://afex-vue.web.app/)
 
 # Screenshots
