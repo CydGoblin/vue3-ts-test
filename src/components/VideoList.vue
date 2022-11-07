@@ -46,17 +46,37 @@ const videosSorted = computed(() => {
   const clone = items.value;
 
   if (sortBy.value === "longer") {
-    return clone.sort(
-      (videoA, videoB) =>
-        YTTimeToSeconds(videoA.contentDetails.duration) +
+    return clone.sort((videoA, videoB) => {
+      if (
+        YTTimeToSeconds(videoA.contentDetails.duration) >
         YTTimeToSeconds(videoB.contentDetails.duration)
-    );
+      ) {
+        return -1;
+      }
+      if (
+        YTTimeToSeconds(videoA.contentDetails.duration) <
+        YTTimeToSeconds(videoB.contentDetails.duration)
+      ) {
+        return 1;
+      }
+      return 0;
+    });
   }
+
   return clone.sort((videoA, videoB) => {
-    return (
-      YTTimeToSeconds(videoA.contentDetails.duration) -
+    if (
+      YTTimeToSeconds(videoA.contentDetails.duration) <
       YTTimeToSeconds(videoB.contentDetails.duration)
-    );
+    ) {
+      return -1;
+    }
+    if (
+      YTTimeToSeconds(videoA.contentDetails.duration) >
+      YTTimeToSeconds(videoB.contentDetails.duration)
+    ) {
+      return 1;
+    }
+    return 0;
   });
 });
 </script>
