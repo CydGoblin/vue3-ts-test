@@ -40,6 +40,7 @@ onMounted(() => {
   height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid red
 }
 
 .modal-content {
@@ -54,10 +55,12 @@ onMounted(() => {
   display: flex;
   align-items: center;
   pointer-events: none;
+  /*border: 1px solid blue*/
 }
 
 .modal {
   position: relative;
+  z-index: 10;
   background-color: #fefefe;
   margin: 3rem auto;
   padding: 2rem;
@@ -66,6 +69,7 @@ onMounted(() => {
   max-width: 1024px;
   border-radius: var(--border-radius);
   box-shadow: 0 20px 20px rgba(0, 0, 0, 0.07);
+  pointer-events: auto;
 }
 
 .close {

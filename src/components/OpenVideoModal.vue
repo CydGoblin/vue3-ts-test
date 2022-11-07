@@ -1,5 +1,5 @@
 <template>
-  <Modal @close="close" @keydown.esc="close" @click="close">
+  <Modal @close="close" @keydown.esc="close">
     <section class="wrapper" v-if="video">
       <div class="video-wrapper">
         <YTVideoContainer :video="video" />

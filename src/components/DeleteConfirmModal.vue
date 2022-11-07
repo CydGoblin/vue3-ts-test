@@ -1,5 +1,5 @@
 <template>
-  <Modal @close="close">
+  <Modal @close="close" @keydown.esc="close">
     <div class="title">¿Seguro que quienes eliminar este video?</div>
     <div class="actions">
       <Button outline @click="cancelDelete">Cancelar</Button>
