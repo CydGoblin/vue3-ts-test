@@ -1,12 +1,14 @@
 <template>
   <div ref="overlay" class="overlay" @click="close"></div>
-  <div class="modal-content" @keydown.esc="close" tabindex="0">
-    <div class="modal">
-      <button class="close" @click="close">
-        <img src="@/assets/CloseIcon.svg" alt="" />
-      </button>
-      <div>
-        <slot />
+  <div class="modal">
+    <div class="modal-dialog" @keydown.esc="close" tabindex="0">
+      <div class="modal-content">
+        <button class="close" @click="close">
+          <img src="@/assets/CloseIcon.svg" alt="" />
+        </button>
+        <div>
+          <slot />
+        </div>
       </div>
     </div>
   </div>
@@ -39,10 +41,10 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
-.modal-content {
+.modal {
   position: fixed;
   z-index: 10;
   left: 0;
@@ -50,13 +52,15 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-dialog {
   display: flex;
   align-items: center;
   pointer-events: none;
 }
 
-.modal {
+.modal-content {
   position: relative;
   z-index: 10;
   background-color: #fefefe;
