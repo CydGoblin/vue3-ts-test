@@ -1,6 +1,5 @@
 <template>
-  <!--  TODO close on click outside/scape-->
-  <Modal @close="close">
+  <Modal @close="close" @keydown.esc="close" @click="close">
     <section class="wrapper">
       <div class="video-wrapper">
         <YTVideoContainer :video="video" />

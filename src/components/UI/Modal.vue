@@ -1,5 +1,11 @@
 <template>
-  <div class="overlay">
+  <div
+    ref="overlay"
+    class="overlay"
+    @keydown.esc="close"
+    tabindex="0"
+    @click="close"
+  >
     <div class="modal">
       <button class="close" @click="close">
         <img src="@/assets/CloseIcon.svg" alt="" />
@@ -12,6 +18,8 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from "vue";
+
 const emit = defineEmits<{
   (e: "close"): void;
 }>();
@@ -19,6 +27,12 @@ const emit = defineEmits<{
 function close() {
   emit("close");
 }
+
+const overlay = ref<HTMLElement | null>(null);
+
+onMounted(() => {
+  overlay.value!.focus();
+});
 </script>
 
 <style scoped>
