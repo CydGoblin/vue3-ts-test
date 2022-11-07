@@ -1,7 +1,9 @@
 # Features
 - Valida si el video es existente, válido y único.
 - El Modal puede ser cerrado dando click en el overlay o con la tecla escape.
-- Responsivo para celulares
+- Responsivo para celulares.
+- Ordena por duración la lista de los videos.
+- Marca videos en vivos.
 
 # Link
 [https://afex-vue.web.app/](https://afex-vue.web.app/)

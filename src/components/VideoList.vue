@@ -19,7 +19,7 @@
 import VideoItem from "@/components/VideoItem.vue";
 import type { Video } from "@/Types/Video";
 import { computed, ref, toRefs } from "vue";
-import { YTTime } from "@/composables/YTTime";
+import { YTTimeToSeconds } from "@/composables/YTTime";
 
 const props = defineProps<{
   items: Video[];
@@ -44,18 +44,18 @@ function removeVideo(video: Video) {
 
 const videosSorted = computed(() => {
   const clone = items.value;
+
   if (sortBy.value === "longer") {
     return clone.sort(
       (videoA, videoB) =>
-        YTTime(videoA.contentDetails.duration) +
-        YTTime(videoB.contentDetails.duration)
+        YTTimeToSeconds(videoA.contentDetails.duration) +
+        YTTimeToSeconds(videoB.contentDetails.duration)
     );
   }
   return clone.sort((videoA, videoB) => {
-    console.log(YTTime(videoA.contentDetails.duration));
     return (
-      YTTime(videoA.contentDetails.duration) -
-      YTTime(videoB.contentDetails.duration)
+      YTTimeToSeconds(videoA.contentDetails.duration) -
+      YTTimeToSeconds(videoB.contentDetails.duration)
     );
   });
 });

@@ -6,7 +6,8 @@
         :src="video.snippet.thumbnails.high.url"
         alt="video title"
       />
-      <span class="item__time">
+      <span v-if="isLive" class="item__time live">Live</span>
+      <span class="item__time" v-else>
         {{ YTDurationFormat(video.contentDetails.duration) }}
       </span>
     </button>
@@ -18,10 +19,14 @@
 
 <script setup lang="ts">
 import type { Video } from "@/Types/Video";
+import { YTDurationFormat } from "@/composables/YTTime";
+import { computed, toRefs } from "vue";
 
-defineProps<{
+const props = defineProps<{
   video: Video;
 }>();
+
+const { video } = toRefs(props);
 
 const emit = defineEmits<{
   (e: "delete", data: Video): void;
@@ -36,24 +41,9 @@ function removeVideo(video: Video) {
   emit("delete", video);
 }
 
-function YTDurationFormat(duration: string) {
-  const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/)!;
-
-  const time = match.slice(1).map((x) => {
-    if (x != null) {
-      return x.replace(/\D/, "");
-    }
-  });
-
-  const hours = parseInt(time[0]!) || 0;
-  const minutes = parseInt(time[1]!) || 0;
-  const seconds = parseInt(time[2]!) || 0;
-
-  const hoursFormat = hours > 0 ? hours + ":" : "";
-  const secondsFormat = seconds < 10 ? `${seconds}0` : seconds;
-
-  return `${hoursFormat}${minutes}:${secondsFormat}`;
-}
+const isLive = computed(() => {
+  return video.value.contentDetails.duration === "P0D";
+});
 </script>
 
 <style scoped>
@@ -93,11 +83,17 @@ function YTDurationFormat(duration: string) {
 
 .item__time {
   position: absolute;
-  bottom: 0.5rem;
+  bottom: 1rem;
   right: 0.5rem;
   padding: 0 0.5rem;
   color: var(--light);
   background: var(--dark);
   opacity: 0.85;
+}
+
+.item__time.live {
+  background: red;
+  color: white;
+  opacity: 1;
 }
 </style>
