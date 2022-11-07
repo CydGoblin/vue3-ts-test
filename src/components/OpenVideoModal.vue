@@ -1,6 +1,6 @@
 <template>
   <Modal @close="close" @keydown.esc="close" @click="close">
-    <section class="wrapper">
+    <section class="wrapper" v-if="video">
       <div class="video-wrapper">
         <YTVideoContainer :video="video" />
       </div>
@@ -18,7 +18,7 @@ import type { Video } from "@/Types/Video";
 import YTVideoContainer from "@/components/YTVideoContainer.vue";
 
 defineProps<{
-  video: Video;
+  video: Video | null;
 }>();
 
 const emit = defineEmits<{

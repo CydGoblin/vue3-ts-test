@@ -16,13 +16,13 @@ import type { Video } from "@/Types/Video";
 import { computed, toRefs } from "vue";
 
 const props = defineProps<{
-  video: Video;
+  video: Video | null;
 }>();
 
 const { video } = toRefs(props);
 
 const videoLink = computed(() => {
-  return `https://www.youtube.com/embed/${video.value.id}`;
+  return video.value ? `https://www.youtube.com/embed/${video.value.id}` : "";
 });
 </script>
 

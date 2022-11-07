@@ -1,11 +1,6 @@
 <template>
-  <div
-    ref="overlay"
-    class="overlay"
-    @keydown.esc="close"
-    tabindex="0"
-    @click="close"
-  >
+  <div ref="overlay" class="overlay" @click="close"></div>
+  <div class="modal-content" @keydown.esc="close" tabindex="0">
     <div class="modal">
       <button class="close" @click="close">
         <img src="@/assets/CloseIcon.svg" alt="" />
@@ -38,7 +33,18 @@ onMounted(() => {
 <style scoped>
 .overlay {
   position: fixed;
-  z-index: 1;
+  z-index: 5;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  position: fixed;
+  z-index: 10;
   left: 0;
   top: 0;
   width: 100%;
@@ -47,6 +53,7 @@ onMounted(() => {
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
+  pointer-events: none;
 }
 
 .modal {
