@@ -1,7 +1,7 @@
 <template>
   <div ref="overlay" class="overlay" @click="close"></div>
-  <div class="modal">
-    <div class="modal-dialog" @keydown.esc="close" tabindex="0">
+  <div class="modal" @keydown.esc="close" tabindex="0">
+    <div class="modal-dialog">
       <div class="modal-content">
         <button class="close" @click="close">
           <img src="@/assets/CloseIcon.svg" alt="" />
@@ -52,11 +52,15 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   overflow: auto;
+  pointer-events: none;
 }
 
 .modal-dialog {
   display: flex;
   align-items: center;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
 }
 

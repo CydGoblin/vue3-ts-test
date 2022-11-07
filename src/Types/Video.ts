@@ -72,6 +72,7 @@ export interface VideoItemsStatistics {
 }
 export interface Video {
   _id?: string;
+  _dateAdded?: Date;
   kind: string;
   etag: string;
   id: string;
